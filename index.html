@@ -1,690 +1,522 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Yadykar Ibraimov — Filmmaker · Photographer · Writer</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Courier+Prime:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-<style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yadykar Ibraimov</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Overpass+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-/* ─── TOKENS ─── */
-:root {
-  --bg:      #111010;
-  --surface: #1a1917;
-  --border:  #2a2825;
-  --muted:   #504e4a;
-  --mid:     #8a8680;
-  --text:    #d4cfc8;
-  --bright:  #ede8df;
-  --amber:   #c8923a;
-  --amber-d: #9a6e28;
-  --amber-l: #e8b464;
-  --red:     #9c3a2a;
-}
+    :root {
+      --bg: #f5f3ef;
+      --ink: #1a1815;
+      --muted: #8a8480;
+      --accent: #2b4a3f;
+      --line: #d9d5cf;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --mono: 'Overpass Mono', monospace;
+    }
 
-/* ─── RESET ─── */
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;scroll-padding-top:60px;}
-body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:'Courier Prime',monospace;
-  font-size:14px;
-  line-height:1.7;
-  overflow-x:hidden;
-}
-a{color:inherit;text-decoration:none;}
-img{display:block;max-width:100%;}
+    html { scroll-behavior: smooth; }
 
-/* ─── GRAIN ─── */
-body::after{
-  content:'';
-  position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:999;mix-blend-mode:overlay;
-}
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--serif);
+      font-weight: 300;
+      font-size: 18px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
 
-/* ─── NAV ─── */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 40px;height:52px;
-  background:rgba(17,16,16,0.92);
-  border-bottom:1px solid var(--border);
-  backdrop-filter:blur(12px);
-}
-.nav-name{
-  font-family:'Cormorant',serif;
-  font-size:17px;font-weight:300;letter-spacing:.06em;
-  color:var(--bright);
-}
-.nav-links{display:flex;gap:32px;}
-.nav-links a{
-  font-size:10px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--muted);transition:color .2s;
-}
-.nav-links a:hover{color:var(--amber);}
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 100;
+      opacity: 0.6;
+    }
 
-/* ─── HERO ─── */
-.hero{
-  padding:130px 40px 90px;
-  max-width:1080px;margin:0 auto;
-  display:grid;
-  grid-template-columns:1fr 340px;
-  gap:80px;align-items:end;
-}
-.hero-left{}
-.hero-eyebrow{
-  font-size:10px;letter-spacing:.22em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:28px;
-  opacity:0;animation:up .5s .1s forwards;
-}
-.hero-name{
-  font-family:'Cormorant',serif;
-  font-size:clamp(54px,7.5vw,100px);
-  font-weight:300;line-height:.9;
-  letter-spacing:-.02em;
-  color:var(--bright);
-  margin-bottom:36px;
-  opacity:0;animation:up .6s .2s forwards;
-}
-.hero-name span{color:var(--amber);font-style:italic;}
-.hero-bio{
-  font-size:14px;line-height:1.85;color:var(--mid);
-  max-width:520px;
-  opacity:0;animation:up .5s .35s forwards;
-}
-.hero-right{
-  opacity:0;animation:up .5s .45s forwards;
-}
-.hero-stats{
-  border-top:1px solid var(--border);
-  padding-top:28px;
-  display:flex;flex-direction:column;gap:20px;
-}
-.stat{}
-.stat-n{
-  font-family:'Cormorant',serif;font-size:36px;font-weight:300;
-  color:var(--bright);line-height:1;
-}
-.stat-l{
-  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--muted);margin-top:3px;
-}
-.hero-scroll{
-  margin-top:60px;
-  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--muted);
-  display:flex;align-items:center;gap:12px;
-}
-.hero-scroll::before{
-  content:'';display:block;width:32px;height:1px;
-  background:var(--muted);
-}
+    /* ── HEADER ── */
+    header {
+      padding: 5rem 6vw 3rem;
+      border-bottom: 1px solid var(--line);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
 
-/* ─── SECTION ─── */
-.section{
-  max-width:1080px;margin:0 auto;
-  padding:80px 40px;
-  border-top:1px solid var(--border);
-}
-.section-label{
-  display:flex;align-items:center;gap:16px;margin-bottom:52px;
-}
-.section-num{
-  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--amber);
-}
-.section-title{
-  font-family:'Cormorant',serif;
-  font-size:28px;font-weight:300;letter-spacing:.02em;
-  color:var(--bright);
-}
+    header h1 {
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: -0.01em;
+      line-height: 1.1;
+    }
 
-/* ─── FILM FEATURED ─── */
-.film-featured{
-  background:var(--surface);
-  border:1px solid var(--border);
-  padding:52px;
-  margin-bottom:2px;
-  position:relative;overflow:hidden;
-}
-.film-featured::before{
-  content:'';
-  position:absolute;top:0;left:0;width:3px;height:100%;
-  background:var(--amber);
-}
-.film-tag{
-  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:20px;
-}
-.film-title{
-  font-family:'Cormorant',serif;
-  font-size:clamp(28px,4vw,48px);
-  font-weight:300;line-height:1.05;letter-spacing:-.01em;
-  color:var(--bright);margin-bottom:14px;
-}
-.film-logline{
-  font-style:italic;color:var(--mid);
-  font-size:15px;line-height:1.75;
-  max-width:600px;margin-bottom:32px;
-  border-left:2px solid var(--border);
-  padding-left:18px;
-}
-.film-awards{
-  display:flex;flex-wrap:wrap;gap:7px;margin-bottom:28px;
-}
-.award{
-  font-size:9px;letter-spacing:.1em;text-transform:uppercase;
-  padding:5px 10px;border:1px solid var(--border);
-  color:var(--muted);border-radius:1px;
-}
-.award.gold{border-color:var(--amber-d);color:var(--amber);}
-.cta{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--amber);transition:gap .2s;
-}
-.cta:hover{gap:16px;}
-.cta::after{content:'→';}
+    header h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
 
-/* ─── FILM GRID ─── */
-.film-grid{
-  display:grid;grid-template-columns:1fr 1fr;gap:2px;
-}
-.film-card{
-  background:var(--surface);border:1px solid var(--border);
-  padding:36px;position:relative;overflow:hidden;
-  transition:border-color .25s;
-}
-.film-card:hover{border-color:var(--muted);}
-.film-card::after{
-  content:'';position:absolute;bottom:0;left:0;
-  width:0;height:1px;background:var(--amber);
-  transition:width .4s;
-}
-.film-card:hover::after{width:100%;}
+    header p.bio {
+      margin-top: 1.2rem;
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 1rem;
+      font-family: var(--mono);
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      line-height: 1.6;
+    }
 
-/* ─── SCREENINGS TABLE ─── */
-.screenings-table{width:100%;border-collapse:collapse;}
-.screenings-table tr{border-bottom:1px solid var(--border);}
-.screenings-table tr:hover td{color:var(--bright);}
-.screenings-table td{
-  padding:14px 0;font-size:12px;vertical-align:top;
-  transition:color .15s;
-}
-.td-date{width:120px;color:var(--amber);letter-spacing:.06em;white-space:nowrap;padding-right:20px;}
-.td-name{color:var(--text);padding-right:20px;}
-.td-loc{width:160px;color:var(--muted);text-align:right;white-space:nowrap;}
-.td-award{
-  color:var(--amber);font-size:9px;letter-spacing:.08em;
-  text-transform:uppercase;display:block;margin-top:3px;
-}
+    header nav {
+      margin-top: 2rem;
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
 
-/* ─── PHOTO PROJECT ─── */
-.photo-layout{
-  display:grid;grid-template-columns:1fr 360px;gap:64px;
-  align-items:start;
-}
-.photo-project-title{
-  font-family:'Cormorant',serif;
-  font-size:clamp(24px,3.5vw,40px);
-  font-weight:300;line-height:1.1;
-  letter-spacing:-.01em;color:var(--bright);
-  margin-bottom:8px;
-}
-.photo-project-sub{
-  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:26px;
-}
-.photo-body{
-  font-size:13px;line-height:1.9;color:var(--mid);
-  margin-bottom:32px;
-}
-.photo-quote{
-  font-family:'Cormorant',serif;
-  font-style:italic;font-size:18px;line-height:1.6;
-  color:var(--text);
-  border-left:2px solid var(--amber);
-  padding:16px 20px;margin:32px 0;
-}
-.exh-table{width:100%;border-collapse:collapse;margin-top:28px;}
-.exh-table tr{border-top:1px solid var(--border);}
-.exh-table tr:last-child{border-bottom:1px solid var(--border);}
-.exh-table td{padding:12px 0;font-size:12px;vertical-align:top;}
-.exh-date{color:var(--amber);width:80px;letter-spacing:.04em;}
-.exh-detail{color:var(--text);}
-.exh-place{color:var(--muted);font-size:11px;margin-top:3px;}
+    header nav a {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
 
-.photo-sidebar{}
-.magnum-card{
-  background:var(--surface);border:1px solid var(--border);
-  padding:36px;margin-bottom:2px;
-}
-.magnum-label{
-  font-size:9px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--muted);margin-bottom:16px;
-}
-.magnum-title{
-  font-family:'Cormorant',serif;
-  font-size:22px;font-weight:300;color:var(--bright);
-  line-height:1.25;margin-bottom:12px;
-}
-.magnum-body{font-size:12px;color:var(--muted);line-height:1.75;margin-bottom:20px;}
+    header nav a:hover { color: var(--ink); }
 
-.ig-card{
-  background:var(--surface);border:1px solid var(--border);
-  padding:28px 36px;display:flex;align-items:center;
-  justify-content:space-between;
-}
-.ig-handle{font-family:'Cormorant',serif;font-size:20px;font-weight:300;color:var(--bright);}
-.ig-sub{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:3px;}
+    /* ── SECTIONS ── */
+    main { padding: 0 6vw 8rem; }
 
-/* ─── WRITING ─── */
-.writing-grid{display:grid;grid-template-columns:1fr 1fr;gap:2px;}
-.writing-card{
-  background:var(--surface);border:1px solid var(--border);
-  padding:36px;position:relative;
-}
-.writing-card::before{
-  content:open-quote;
-  font-family:'Cormorant',serif;font-size:100px;
-  color:var(--border);
-  position:absolute;top:8px;right:24px;line-height:1;
-  pointer-events:none;
-}
-.writing-type{
-  font-size:9px;letter-spacing:.16em;text-transform:uppercase;
-  color:var(--amber);margin-bottom:16px;
-}
-.writing-title{
-  font-family:'Cormorant',serif;
-  font-size:22px;font-weight:300;line-height:1.2;
-  color:var(--bright);margin-bottom:12px;
-}
-.writing-pub{
-  font-size:11px;color:var(--muted);line-height:1.65;
-  border-left:2px solid var(--border);padding-left:12px;
-  margin:16px 0;
-}
+    section {
+      padding-top: 6rem;
+      border-top: 1px solid var(--line);
+      margin-top: 0;
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
+    }
 
-/* ─── RECENT ─── */
-.recent-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
-.recent-card{
-  background:var(--surface);border:1px solid var(--border);
-  padding:32px;transition:border-color .2s;
-}
-.recent-card:hover{border-color:var(--muted);}
-.recent-date{font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber);margin-bottom:14px;}
-.recent-title{
-  font-family:'Cormorant',serif;font-size:18px;font-weight:300;
-  color:var(--bright);line-height:1.3;margin-bottom:10px;
-}
-.recent-body{font-size:12px;color:var(--muted);line-height:1.75;}
+    section.visible { opacity: 1; transform: translateY(0); }
 
-/* ─── FOOTER ─── */
-footer{
-  border-top:1px solid var(--border);
-  max-width:1080px;margin:0 auto;
-  padding:60px 40px 80px;
-}
-.footer-top{
-  display:flex;justify-content:space-between;
-  align-items:flex-start;margin-bottom:64px;
-  gap:40px;
-}
-.contact-title{
-  font-family:'Cormorant',serif;
-  font-size:clamp(40px,6vw,80px);
-  font-weight:300;line-height:.9;letter-spacing:-.02em;
-  color:var(--bright);margin-bottom:24px;
-}
-.contact-links{display:flex;flex-direction:column;gap:12px;margin-top:32px;}
-.contact-link{
-  display:inline-flex;align-items:center;gap:10px;
-  font-size:10px;letter-spacing:.14em;text-transform:uppercase;
-  color:var(--mid);transition:color .2s;
-}
-.contact-link:hover{color:var(--amber);}
-.contact-link::before{content:'↗';color:var(--amber);}
-.footer-meta{text-align:right;}
-.footer-copy{font-size:10px;color:var(--muted);letter-spacing:.08em;}
-.footer-where{
-  font-family:'Cormorant',serif;font-style:italic;
-  font-size:16px;color:var(--muted);margin-top:8px;
-}
+    section h2 {
+      font-size: 0.68rem;
+      font-family: var(--mono);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 3.5rem;
+    }
 
-/* ─── ANIMATIONS ─── */
-@keyframes up{
-  from{opacity:0;transform:translateY(14px);}
-  to{opacity:1;transform:none;}
-}
-.reveal{
-  opacity:0;transform:translateY(16px);
-  transition:opacity .55s ease,transform .55s ease;
-}
-.reveal.in{opacity:1;transform:none;}
+    /* ── WORK CARD ── */
+    .work {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 4rem;
+    }
 
-/* ─── RESPONSIVE ─── */
-@media(max-width:860px){
-  nav{padding:0 24px;}
-  .nav-links{gap:20px;}
-  .hero{grid-template-columns:1fr;gap:48px;padding:110px 24px 64px;}
-  .hero-right{border-top:1px solid var(--border);padding-top:32px;}
-  .hero-stats{flex-direction:row;flex-wrap:wrap;gap:32px;}
-  .section{padding:56px 24px;}
-  .film-featured{padding:36px;}
-  .film-grid{grid-template-columns:1fr;}
-  .photo-layout{grid-template-columns:1fr;}
-  .writing-grid{grid-template-columns:1fr;}
-  .recent-grid{grid-template-columns:1fr;}
-  footer{padding:48px 24px 64px;}
-  .footer-top{flex-direction:column;}
-  .footer-meta{text-align:left;}
-  .td-loc{display:none;}
-}
-@media(max-width:560px){
-  .nav-links a{font-size:9px;letter-spacing:.12em;}
-  .nav-links{gap:14px;}
-  .film-awards{gap:5px;}
-}
-</style>
+    @media (min-width: 860px) {
+      .work { grid-template-columns: 1fr 1fr; }
+    }
+
+    .card {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .card.visible { opacity: 1; transform: translateY(0); }
+
+    .card-thumb {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      overflow: hidden;
+      background: var(--line);
+      margin-bottom: 1.4rem;
+    }
+
+    .card-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
+      filter: grayscale(15%);
+    }
+
+    .card:hover .card-thumb img { transform: scale(1.035); filter: grayscale(0%); }
+
+    .card-thumb::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26,24,21,0.18) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .thumb-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--line);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .card-type {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.5rem;
+    }
+
+    .card h3 {
+      font-size: 1.55rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+
+    .card h3 em { font-style: italic; }
+
+    .card p {
+      font-size: 0.95rem;
+      color: #4a4744;
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    .awards {
+      margin-top: 0.8rem;
+    }
+
+    .award-item {
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      padding: 0.35rem 0;
+      border-top: 1px solid var(--line);
+      line-height: 1.5;
+    }
+
+    .award-item:last-child { border-bottom: 1px solid var(--line); }
+
+    .award-item strong {
+      color: var(--ink);
+      font-weight: 400;
+      display: block;
+    }
+
+    /* ── LINKS ── */
+    .links {
+      display: flex;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      margin-top: 1.2rem;
+    }
+
+    .link-btn {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      padding: 0.45rem 0.9rem;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+
+    .link-btn:hover {
+      background: var(--ink);
+      color: var(--bg);
+      border-color: var(--ink);
+    }
+
+    /* ── SINGLE COLUMN ITEMS (photo, writing) ── */
+    .item-list {
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    .item {
+      max-width: 680px;
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
+    }
+
+    .item.visible { opacity: 1; transform: translateY(0); }
+
+    .item-type {
+      font-family: var(--mono);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+
+    .item h3 { font-size: 1.35rem; font-weight: 400; margin-bottom: 0.7rem; }
+    .item p { font-size: 0.95rem; color: #4a4744; line-height: 1.65; }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--line);
+      padding: 3rem 6vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-family: var(--mono);
+      font-size: 0.65rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    footer a { color: var(--muted); text-decoration: none; }
+    footer a:hover { color: var(--ink); }
+
+    /* ── FADE IN ── */
+    @keyframes rise {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* YouTube thumbnail helper */
+    .yt-thumb { object-fit: cover; }
+  </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <span class="nav-name">Yadykar Ibraimov</span>
-  <div class="nav-links">
+<header>
+  <h1>Yadykar<br><em>Ibraimov</em></h1>
+  <p class="bio">Documentary filmmaker · Photographer · Writer<br>Uyghur–Kazakh artist based in Almaty</p>
+  <nav>
     <a href="#film">Film</a>
-    <a href="#photo">Photo</a>
+    <a href="#photo">Photography</a>
     <a href="#writing">Writing</a>
-    <a href="#recent">Recent</a>
-    <a href="#contact">Contact</a>
-  </div>
-</nav>
+    <a href="https://www.instagram.com/yangisar/" target="_blank" rel="noopener">Instagram ↗</a>
+  </nav>
+</header>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="hero-eyebrow">Filmmaker · Photographer · Writer · Almaty, Kazakhstan</div>
-    <h1 class="hero-name">Yadykar<br><span>Ibraimov</span></h1>
-    <p class="hero-bio">Documentary filmmaker and photographer working across Central Asia. His work bears witness to dying glaciers, the Uyghur genocide, and lives at the margins — in collaboration with Magnum Photos, screened at festivals across four continents, and published in international anthologies.</p>
-    <div class="hero-scroll">Scroll to explore</div>
-  </div>
-  <div class="hero-right">
-    <div class="hero-stats">
-      <div class="stat">
-        <div class="stat-n">12+</div>
-        <div class="stat-l">Film festival screenings</div>
-      </div>
-      <div class="stat">
-        <div class="stat-n">5</div>
-        <div class="stat-l">International exhibitions</div>
-      </div>
-      <div class="stat">
-        <div class="stat-n">Magnum</div>
-        <div class="stat-l">Photos collaboration</div>
-      </div>
-      <div class="stat">
-        <div class="stat-n">MUBI</div>
-        <div class="stat-l">Available worldwide</div>
-      </div>
-    </div>
-  </div>
-</div>
+<main>
 
-<!-- ═══════════════ FILM ═══════════════ -->
-<section class="section" id="film">
-  <div class="section-label reveal">
-    <span class="section-num">01</span>
-    <h2 class="section-title">Film</h2>
-  </div>
+  <!-- FILM -->
+  <section id="film">
+    <h2>Film Works</h2>
+    <div class="work">
 
-  <!-- VOICE OF THE GLACIER -->
-  <div class="film-featured reveal">
-    <div class="film-tag">Feature Documentary — 2023</div>
-    <h3 class="film-title">Voice of the Glacier</h3>
-    <p class="film-logline">In a remote mountainous area at an altitude of 3,400 meters — in absolute isolation — two researchers are studying an ancient, dying glacier.</p>
-    <div class="film-awards">
-      <span class="award gold">★ Best Cinematography — UAFF Ankara 2024</span>
-      <span class="award gold">★ Best Cinematography — Touchstone IFF 2024</span>
-      <span class="award gold">★ Artistic Value Award — Bastau IFF 2023</span>
-      <span class="award">Best Documentary Nominee — Cinema Verite</span>
-      <span class="award">Best Documentary Nominee — Golden FEMI 2025</span>
-      <span class="award">World Premiere — Cottbus IFF, Germany</span>
-      <span class="award">Wildlife Vaasa — Vaasa, Finland</span>
-      <span class="award">Frome Climate Film Festival — UK</span>
-      <span class="award">Film Huis Cavia — Amsterdam</span>
-      <span class="award">Now on MUBI</span>
-    </div>
-    <a href="https://mubi.com/en/kz/films/voice-of-the-glacier" target="_blank" class="cta">Watch on MUBI</a>
-  </div>
-
-  <!-- LETTER HOME + LET HER DANCE -->
-  <div class="film-grid reveal" style="margin-top:2px;">
-    <div class="film-card">
-      <div class="film-tag">Short Documentary</div>
-      <h3 class="film-title" style="font-size:26px;">Letter Home</h3>
-      <p style="font-size:13px;color:var(--mid);line-height:1.8;margin-bottom:24px;">A group of artists gather audio messages from Uyghur people around the world who have lost contact with loved ones due to Chinese persecution. The messages are played as a performative gesture on the Chinese border.</p>
-      <div class="film-awards">
-        <span class="award">2.Dh5 Festival — Amsterdam, Feb 2024</span>
-        <span class="award">Decolonial Documentation — Toronto, Feb 2025</span>
-        <span class="award">Online Exhibition — Asphalt Lines Lives</span>
-      </div>
-      <a href="https://asphalt-lines-lives.com/projects/ramil-niyazov/" target="_blank" class="cta" style="margin-top:20px;display:inline-flex;">View Project</a>
-    </div>
-    <div class="film-card">
-      <div class="film-tag">Short Video Art</div>
-      <h3 class="film-title" style="font-size:26px;">Let Her Dance</h3>
-      <p style="font-size:13px;color:var(--mid);line-height:1.8;margin-bottom:24px;">Dance as allegory for the Uyghur plight. An experimental film crossing the boundary between beauty and political urgency, the personal and the collective.</p>
-      <div class="film-awards">
-        <span class="award gold">★ Best Short Film Nominee — Diaspora FF NY 2024</span>
-        <span class="award">Balkan Can Kino — Athens, Nov 2022</span>
-        <span class="award">ONED Festival — Toulouse, Aug 2023</span>
-        <span class="award">WideScreen Festival — Nov 2024</span>
-        <span class="award">EIFF — Nov 2022</span>
-        <span class="award">9th Folklore FF — India, 2026</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ SCREENINGS ═══════════════ -->
-<section class="section">
-  <div class="section-label reveal">
-    <span class="section-num">—</span>
-    <h2 class="section-title">All Festival Screenings</h2>
-  </div>
-  <table class="screenings-table reveal">
-    <tbody>
-      <tr><td class="td-date">Nov 2022</td><td class="td-name">Balkan Can Kino — "Decolonise" Category<span class="td-award">Official Selection</span></td><td class="td-loc">Athens, Greece</td></tr>
-      <tr><td class="td-date">Nov 2022</td><td class="td-name">Ekurhuleni International Film Festival (EIFF 24)</td><td class="td-loc">South Africa</td></tr>
-      <tr><td class="td-date">Aug 2023</td><td class="td-name">ONED Art/Experimental Film Festival</td><td class="td-loc">Toulouse, France</td></tr>
-      <tr><td class="td-date">Nov 2023</td><td class="td-name">Cottbus International Film Festival<span class="td-award">World Premiere — Voice of the Glacier</span></td><td class="td-loc">Germany</td></tr>
-      <tr><td class="td-date">Dec 2023</td><td class="td-name">Bastau International Film Festival<span class="td-award">★ Artistic Value &amp; Creative Endeavor Award</span></td><td class="td-loc">Almaty, Kazakhstan</td></tr>
-      <tr><td class="td-date">Dec 2023</td><td class="td-name">Iran IDF Festival — Cinema Verite<span class="td-award">★ Best Documentary Nominee</span></td><td class="td-loc">Iran</td></tr>
-      <tr><td class="td-date">Feb 2024</td><td class="td-name">2.Dh5 Festival — International Solidarity Cinema<span class="td-award">Letter Home</span></td><td class="td-loc">Amsterdam</td></tr>
-      <tr><td class="td-date">May 2024</td><td class="td-name">UAFF Ankara<span class="td-award">★ Best Cinematography Award</span></td><td class="td-loc">Turkey</td></tr>
-      <tr><td class="td-date">May 2024</td><td class="td-name">Frome International Climate Film Festival</td><td class="td-loc">UK</td></tr>
-      <tr><td class="td-date">Jun 2024</td><td class="td-name">Diaspora Film Festival<span class="td-award">★ Best Short Film Nominee — Let Her Dance</span></td><td class="td-loc">New York, USA</td></tr>
-      <tr><td class="td-date">Aug 2024</td><td class="td-name">Moons of Cavia — Film Huis Cavia</td><td class="td-loc">Amsterdam</td></tr>
-      <tr><td class="td-date">Sep 2024</td><td class="td-name">Wildlife Vaasa — International Nature Film Festival</td><td class="td-loc">Vaasa, Finland</td></tr>
-      <tr><td class="td-date">Oct 2024</td><td class="td-name">Touchstone Independent Film Festival<span class="td-award">★ Best Cinematography Award</span></td><td class="td-loc">USA</td></tr>
-      <tr><td class="td-date">Nov 2024</td><td class="td-name">WideScreen Film &amp; Music Video Festival<span class="td-award">Official Selection — Let Her Dance</span></td><td class="td-loc">International</td></tr>
-      <tr><td class="td-date">Feb 2025</td><td class="td-name">Decolonial Documentation Symposium — Innis College<span class="td-award">Letter Home</span></td><td class="td-loc">Toronto, Canada</td></tr>
-      <tr><td class="td-date">Jun 2025</td><td class="td-name">Golden FEMI Film Festival<span class="td-award">★ Best Documentary Nominee</span></td><td class="td-loc">International</td></tr>
-      <tr><td class="td-date">2026</td><td class="td-name">9th International Folklore Film Festival</td><td class="td-loc">Kerala, India</td></tr>
-    </tbody>
-  </table>
-</section>
-
-<!-- ═══════════════ PHOTO ═══════════════ -->
-<section class="section" id="photo">
-  <div class="section-label reveal">
-    <span class="section-num">02</span>
-    <h2 class="section-title">Photography</h2>
-  </div>
-
-  <div class="photo-layout reveal">
-    <div class="photo-text">
-      <div class="photo-project-sub">Magnum Photos — Beyond the Silence Collaboration</div>
-      <h3 class="photo-project-title">"Tono-naan is at home,<br>but where is home?"</h3>
-      <p class="photo-body">A photoproject exploring the Uyghur genocide. Yadykar turns his lens on Kazakhstan's eastern border and Uyghur territory, documenting the experiences of survivors of Chinese concentration camps.</p>
-      <blockquote class="photo-quote">"Families torn apart, cultures wiped out, and lives changed forever. This is not some distant tragedy — it is happening right now to people with names, families, and dreams, many of whom are still suffering in silence."</blockquote>
-      <p class="photo-body">The project explores how the borderland has become more than a conflict zone — a place of torture on one side and a sought-after refuge on the other; a political border that divides the landscape and threatens the fate of its people.</p>
-
-      <table class="exh-table">
-        <tr>
-          <td class="exh-date">Aug 2023</td>
-          <td class="exh-detail">
-            Salon der Photographie — Kunstverein
-            <div class="exh-place">Paderborn, Germany</div>
-          </td>
-        </tr>
-        <tr>
-          <td class="exh-date">Nov 2024</td>
-          <td class="exh-detail">
-            <em>Beyond the Silence</em> — Egin Art Space (Opening)
-            <div class="exh-place">Almaty, Kazakhstan — Theme: Territory</div>
-          </td>
-        </tr>
-        <tr>
-          <td class="exh-date">Dec 2024</td>
-          <td class="exh-detail">
-            Centro Fotográfico Manuel Álvarez Bravo
-            <div class="exh-place">Oaxaca, Mexico — Theme: Censorship &amp; Propaganda</div>
-          </td>
-        </tr>
-        <tr>
-          <td class="exh-date">Feb 2025</td>
-          <td class="exh-detail">
-            Angkor Photo Festival
-            <div class="exh-place">Cambodia</div>
-          </td>
-        </tr>
-        <tr>
-          <td class="exh-date">Mar 2025</td>
-          <td class="exh-detail">
-            Odesa Photo Days × Magnum Photos — Jam Factory Art Center
-            <div class="exh-place">Lviv, Ukraine</div>
-          </td>
-        </tr>
-      </table>
-    </div>
-
-    <div class="photo-sidebar">
-      <div class="magnum-card">
-        <div class="magnum-label">Collaboration</div>
-        <div class="magnum-title">Magnum Photos<br>Beyond the Silence</div>
-        <p class="magnum-body">International multi-photographer project documenting lives affected by the Uyghur genocide across borders, languages, and silences.</p>
-        <a href="https://www.magnumphotos.com/newsroom/beyond-the-silence-an-exhibition-in-kazakhstan/" target="_blank" class="cta">View on Magnum Photos</a>
-      </div>
-
-      <div class="ig-card" style="margin-top:2px;">
-        <div>
-          <div class="ig-handle">@yangisar</div>
-          <div class="ig-sub">Follow the work</div>
+      <!-- Voice of the Glacier -->
+      <div class="card">
+        <div class="card-thumb">
+          <img
+            src="https://img.youtube.com/vi/JNP8gI2tbQE/maxresdefault.jpg"
+            alt="Voice of the Glacier"
+            loading="lazy"
+            onerror="this.src='https://img.youtube.com/vi/JNP8gI2tbQE/hqdefault.jpg'"
+          />
         </div>
-        <a href="https://www.instagram.com/yangisar/" target="_blank" class="cta">Instagram</a>
+        <div class="card-type">Feature Documentary</div>
+        <h3><em>"Voice of the Glacier"</em></h3>
+        <p>In a remote mountainous area at an altitude of 3,400 meters, in absolute isolation, two researchers study an ancient dying glacier.</p>
+        <div class="awards">
+          <div class="award-item"><strong>Nov 2023 — Cottbus IFF, Germany</strong>World Premiere</div>
+          <div class="award-item"><strong>Dec 2023 — Bastau IFF, Almaty</strong>Artistic Value &amp; Creative Endeavor Award</div>
+          <div class="award-item"><strong>Dec 2023 — Cinema Verite, Iran</strong>Best Documentary Nominee</div>
+          <div class="award-item"><strong>May 2024 — UAFF Ankara, Turkey</strong>Best Cinematography Award</div>
+          <div class="award-item"><strong>Oct 2024 — Touchstone IFF</strong>Best Cinematography Award</div>
+          <div class="award-item"><strong>Sep 2024 — Wildlife Vaasa, Finland</strong>Official Selection</div>
+          <div class="award-item"><strong>Jun 2025 — Golden FEMI</strong>Best Documentary Nominee</div>
+        </div>
+        <div class="links">
+          <a class="link-btn" href="https://www.youtube.com/watch?v=JNP8gI2tbQE" target="_blank" rel="noopener">Watch screener</a>
+          <a class="link-btn" href="https://www.youtube.com/watch?v=P5m8h8dXj8A" target="_blank" rel="noopener">Trailer</a>
+          <a class="link-btn" href="https://mubi.com/en/kz/films/voice-of-the-glacier" target="_blank" rel="noopener">MUBI</a>
+        </div>
+      </div>
+
+      <!-- Let Her Dance -->
+      <div class="card">
+        <div class="card-thumb">
+          <img
+            src="https://img.youtube.com/vi/rZ2Rx3kF1BU/maxresdefault.jpg"
+            alt="Let Her Dance"
+            loading="lazy"
+            onerror="this.src='https://img.youtube.com/vi/rZ2Rx3kF1BU/hqdefault.jpg'"
+          />
+        </div>
+        <div class="card-type">Short Video Art Film</div>
+        <h3><em>"Let Her Dance"</em></h3>
+        <p>Dance as allegory to Uyghur plight — a poetic short exploring body, freedom, and resistance.</p>
+        <div class="awards">
+          <div class="award-item"><strong>Nov 2022 — Balkan Can Kino, Athens</strong>Official Selection — Decolonise category</div>
+          <div class="award-item"><strong>Jun 2024 — Diaspora Film Festival, New York</strong>Best Short Film Nominee</div>
+          <div class="award-item"><strong>Aug 2023 — ONED Festival, Toulouse</strong>Official Selection</div>
+          <div class="award-item"><strong>Nov 2024 — WideScreen Film &amp; Music Video Festival</strong>Official Selection</div>
+        </div>
+        <div class="links">
+          <a class="link-btn" href="https://www.youtube.com/watch?v=rZ2Rx3kF1BU" target="_blank" rel="noopener">Watch film</a>
+        </div>
+      </div>
+
+      <!-- Letter Home -->
+      <div class="card">
+        <div class="card-thumb">
+          <div class="thumb-placeholder">Short Documentary</div>
+        </div>
+        <div class="card-type">Short Documentary</div>
+        <h3><em>"Letter Home"</em></h3>
+        <p>Audio messages from Uyghur people around the world who lost touch with loved ones — played as a performative gesture at the Chinese border.</p>
+        <div class="awards">
+          <div class="award-item"><strong>Feb 2024 — 2.Dh5 Festival, Amsterdam</strong>Screening</div>
+          <div class="award-item"><strong>Feb 2025 — Decolonial Documentation, Toronto</strong>Symposium &amp; Screening</div>
+        </div>
+        <div class="links">
+          <a class="link-btn" href="https://www.instagram.com/reel/C28BoFAiI0L/" target="_blank" rel="noopener">Watch short</a>
+          <a class="link-btn" href="https://asphalt-lines-lives.com/projects/ramil-niyazov/" target="_blank" rel="noopener">Online exhibition</a>
+        </div>
+      </div>
+
+      <!-- Tracks East ARTE -->
+      <div class="card">
+        <div class="card-thumb">
+          <img
+            src="https://img.youtube.com/vi/fJ6DVOYjOG0/maxresdefault.jpg"
+            alt="Tracks East ARTE"
+            loading="lazy"
+            onerror="this.src='https://img.youtube.com/vi/fJ6DVOYjOG0/hqdefault.jpg'"
+          />
+        </div>
+        <div class="card-type">TV Documentary Segment</div>
+        <h3><em>Tracks East</em> — ARTE.TV</h3>
+        <p>Documentary segment aired January 2026 on ARTE.TV, the Franco-German public broadcaster.</p>
+        <div class="links">
+          <a class="link-btn" href="https://www.youtube.com/watch?v=fJ6DVOYjOG0" target="_blank" rel="noopener">Watch on YouTube</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PHOTO -->
+  <section id="photo">
+    <h2>Photography</h2>
+    <div class="item-list">
+
+      <div class="item">
+        <div class="item-type">Photo Project · Magnum Photos Collaboration</div>
+        <h3><em>"Tono-naan is at home, but where is home?"</em></h3>
+        <p>Part of Magnum Photos Agency's <em>Beyond the Silence</em> collaboration. The project documents experiences of Uyghur survivors of Chinese concentration camps along Kazakhstan's eastern border — a borderland that has become both a place of torture and a sought-after refuge.</p>
+        <div class="awards" style="margin-top:1rem">
+          <div class="award-item"><strong>Nov 2024 — Egin Art Space, Almaty</strong>Beyond the Silence — Territory</div>
+          <div class="award-item"><strong>Dec 2024 — Centro Fotográfico Manuel Álvarez Bravo, Oaxaca</strong>Beyond the Silence — Censorship &amp; Propaganda</div>
+          <div class="award-item"><strong>Feb 2025 — Angkor Photo Festival, Cambodia</strong>Group Exhibition</div>
+          <div class="award-item"><strong>Mar 2025 — Jam Factory Art Center, Lviv, Ukraine</strong>Beyond the Silence · Odesa Photo Days × Magnum</div>
+        </div>
+        <div class="links" style="margin-top:1rem">
+          <a class="link-btn" href="https://www.magnumphotos.com/newsroom/beyond-the-silence-an-exhibition-in-kazakhstan/" target="_blank" rel="noopener">Magnum Photos ↗</a>
+          <a class="link-btn" href="https://angkor-photo.com/apf-programme/beyond-the-silence/" target="_blank" rel="noopener">Angkor Photo Festival</a>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-type">Solo Exhibition</div>
+        <h3>Salon der Photographie — Paderborn, Germany</h3>
+        <p>Portraits of Uyghurs who were imprisoned in Chinese concentration camps, exhibited at the Paderborn Kunstverein. August 2023.</p>
+        <div class="links" style="margin-top:1rem">
+          <a class="link-btn" href="https://www.nw.de/lokal/kreis_paderborn/paderborn/23629130_Neue-Ausstellung-im-Paderborner-Kunstverein-zeigt-fotografische-Erzaehlungen.html" target="_blank" rel="noopener">Press coverage ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WRITING -->
+  <section id="writing">
+    <h2>Published Writing</h2>
+    <div class="item-list">
+
+      <div class="item">
+        <div class="item-type">Short Story</div>
+        <h3><em>"Aziz's Name"</em></h3>
+        <p>Published in <em>Under the Mulberry Tree: A Contemporary Uyghur Anthology, Vol. I</em> (February 2023). The story can be read in full via the Uyghur Collective.</p>
+        <div class="links" style="margin-top:1rem">
+          <a class="link-btn" href="https://uyghurcollective.com/community/f/azizs-name" target="_blank" rel="noopener">Read story ↗</a>
+          <a class="link-btn" href="https://www.amazon.com/Under-Mulberry-Tree-Contemporary-Anthology/dp/B0C3FTRMMD" target="_blank" rel="noopener">Anthology on Amazon</a>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-type">Poem</div>
+        <h3><em>"Lines from a Correspondence with the Leader of the Party"</em></h3>
+        <p>Forthcoming in the Second Edition of the Uyghur Anthology. Published online at <em>I Am Not a Silent Poet</em>.</p>
+        <div class="links" style="margin-top:1rem">
+          <a class="link-btn" href="https://iamnotasilentpoet.wordpress.com/2019/05/27/lines-from-a-correspondence-with-the-leader-of-the-party-by-yadykar-ibraimov/" target="_blank" rel="noopener">Read poem ↗</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTERACTIVE -->
+  <section id="other">
+    <h2>Interactive</h2>
+    <div class="item-list">
+      <div class="item">
+        <div class="item-type">Browser Game · February 2026</div>
+        <h3>Mobile Mini-Game — Kazakh Rap Collaboration</h3>
+        <p>A browser-based mobile game created in collaboration with a Kazakh rap band.</p>
+        <div class="links" style="margin-top:1rem">
+          <a class="link-btn" href="https://yangisar.github.io/daiynball.race/" target="_blank" rel="noopener">Play game ↗</a>
+        </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══════════════ WRITING ═══════════════ -->
-<section class="section" id="writing">
-  <div class="section-label reveal">
-    <span class="section-num">03</span>
-    <h2 class="section-title">Writing</h2>
-  </div>
+</main>
 
-  <div class="writing-grid reveal">
-    <div class="writing-card">
-      <div class="writing-type">Short Story</div>
-      <h3 class="writing-title">"Aziz's Name"</h3>
-      <p style="font-size:13px;color:var(--mid);line-height:1.8;">A short story of identity, erasure, and survival — published in the first volume of a landmark Uyghur anthology in English translation.</p>
-      <div class="writing-pub">
-        <em>Under the Mulberry Tree: A Contemporary Uyghur Anthology, Vol. I</em><br>
-        Published February 21, 2023
-      </div>
-      <a href="https://uyghurcollective.com/community/f/azizs-name" target="_blank" class="cta">Read the story</a>
-    </div>
-
-    <div class="writing-card">
-      <div class="writing-type">Poem</div>
-      <h3 class="writing-title">"Lines from a Correspondence with the Leader of the Party"</h3>
-      <p style="font-size:13px;color:var(--mid);line-height:1.8;">A poem of political witness and quiet fury. Forthcoming in the Second Edition of the Uyghur Anthology.</p>
-      <div class="writing-pub">
-        Forthcoming in <em>Uyghur Anthology, Vol. II</em><br>
-        Previously published online, 2019
-      </div>
-      <a href="https://iamnotasilentpoet.wordpress.com/2019/05/27/lines-from-a-correspondence-with-the-leader-of-the-party-by-yadykar-ibraimov/" target="_blank" class="cta">Read the poem</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ RECENT ═══════════════ -->
-<section class="section" id="recent">
-  <div class="section-label reveal">
-    <span class="section-num">04</span>
-    <h2 class="section-title">Recent Work</h2>
-  </div>
-
-  <div class="recent-grid reveal">
-    <div class="recent-card">
-      <div class="recent-date">January 2026</div>
-      <h4 class="recent-title">Tracks East — ARTE.TV</h4>
-      <p class="recent-body">Featured in a documentary segment for ARTE.TV's Tracks East series, broadcast across Europe. A new film for a continent-wide audience.</p>
-      <a href="https://www.youtube.com/watch?v=fJ6DVOYjOG0" target="_blank" class="cta" style="margin-top:18px;display:inline-flex;">Watch on YouTube</a>
-    </div>
-    <div class="recent-card">
-      <div class="recent-date">February 2026</div>
-      <h4 class="recent-title">Kazakh Rap Collab — Browser Game</h4>
-      <p class="recent-body">A mobile browser-based mini-game made in collaboration with a Kazakh rap band. Where documentary gives way to play and music to code.</p>
-      <a href="https://yangisar.github.io/daiynball.race/" target="_blank" class="cta" style="margin-top:18px;display:inline-flex;">Play the game</a>
-    </div>
-    <div class="recent-card">
-      <div class="recent-date">March 2025</div>
-      <h4 class="recent-title">Jam Factory, Lviv — Multimedia Exhibition</h4>
-      <p class="recent-body"><em>Beyond the Silence</em> opens at Jam Factory Art Center in Lviv — Odesa Photo Days × Magnum Photos, during wartime Ukraine.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════ FOOTER ═══════════════ -->
-<footer id="contact">
-  <div class="footer-top">
-    <div>
-      <div class="contact-title">Let's<br><em style="font-family:'Cormorant',serif;font-style:italic;color:var(--amber);">talk.</em></div>
-      <div class="contact-links">
-        <a href="https://www.instagram.com/yangisar/" target="_blank" class="contact-link">Instagram — @yangisar</a>
-        <a href="https://mubi.com/en/kz/films/voice-of-the-glacier" target="_blank" class="contact-link">Voice of the Glacier on MUBI</a>
-        <a href="https://www.magnumphotos.com/newsroom/beyond-the-silence-an-exhibition-in-kazakhstan/" target="_blank" class="contact-link">Magnum Photos — Beyond the Silence</a>
-        <a href="https://asphalt-lines-lives.com/projects/ramil-niyazov/" target="_blank" class="contact-link">Letter Home — Online Exhibition</a>
-        <a href="https://yangisar.github.io/daiynball.race/" target="_blank" class="contact-link">Daiynball.race — Browser Game</a>
-      </div>
-    </div>
-    <div class="footer-meta">
-      <div class="footer-copy">© 2026 Yadykar Ibraimov<br>All rights reserved</div>
-      <div class="footer-where">Almaty, Kazakhstan</div>
-    </div>
-  </div>
+<footer>
+  <span>Yadykar Ibraimov — Almaty, Kazakhstan</span>
+  <a href="https://www.instagram.com/yangisar/" target="_blank" rel="noopener">@yangisar</a>
 </footer>
 
 <script>
-const io = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('in'), i * 70);
-      io.unobserve(e.target);
-    }
-  });
-}, { threshold: 0.06, rootMargin: '0px 0px -30px 0px' });
+  // Intersection Observer for scroll-based fade-in
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        // Stagger children cards/items
+        const children = entry.target.querySelectorAll('.card, .item');
+        children.forEach((child, i) => {
+          setTimeout(() => child.classList.add('visible'), i * 120);
+        });
+      }
+    });
+  }, { threshold: 0.08 });
 
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelectorAll('section').forEach(s => observer.observe(s));
 </script>
+
 </body>
 </html>
