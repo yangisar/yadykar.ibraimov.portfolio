@@ -9,373 +9,184 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Overpass+Mono:wght@300;400&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg: #f5f3ef;
-      --ink: #1a1815;
-      --muted: #8a8480;
-      --accent: #2b4a3f;
-      --line: #d9d5cf;
+      --bg: #f5f3ef; --ink: #1a1815; --muted: #8a8480;
+      --accent: #2b4a3f; --line: #d9d5cf;
       --serif: 'Cormorant Garamond', Georgia, serif;
       --mono: 'Overpass Mono', monospace;
     }
-
     html { scroll-behavior: smooth; }
-
     body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--serif);
-      font-weight: 300;
-      font-size: 20px;
-      line-height: 1.75;
-      -webkit-font-smoothing: antialiased;
+      background: var(--bg); color: var(--ink); font-family: var(--serif);
+      font-weight: 300; font-size: 20px; line-height: 1.75;
+      -webkit-font-smoothing: antialiased; min-height: 100vh;
     }
-
-    /* Grain overlay */
     body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 100;
-      opacity: 0.6;
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 200; opacity: 0.5;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
     }
 
-    /* ── HEADER ── */
+    /* HEADER */
     header {
-      padding: 6rem 6vw 4.5rem;
-      border-bottom: 1px solid var(--line);
-      opacity: 0;
-      transform: translateY(20px);
-      animation: rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+      padding: 5.5rem 6vw 4rem; border-bottom: 1px solid var(--line);
+      opacity: 0; transform: translateY(18px);
+      animation: rise 1.1s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
     }
+    .header-top { display: flex; align-items: flex-end; justify-content: space-between; flex-wrap: wrap; gap: 2rem; }
+    header h1 { font-size: clamp(2.8rem, 5.5vw, 5rem); font-weight: 300; letter-spacing: -0.02em; line-height: 1.0; }
+    header h1 em { font-style: italic; color: var(--accent); }
+    .header-contact { font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); text-align: right; line-height: 2.2; }
+    .header-contact a { color: var(--muted); text-decoration: none; transition: color 0.2s; display: block; }
+    .header-contact a:hover { color: var(--ink); }
+    .bio-block { margin-top: 2.5rem; padding-top: 2rem; border-top: 1px solid var(--line); max-width: 640px; }
+    .bio-block p { font-size: 1.15rem; line-height: 1.8; color: #3d3a37; }
 
-    header h1 {
-      font-size: clamp(3rem, 6vw, 5.2rem);
-      font-weight: 300;
-      letter-spacing: -0.01em;
-      line-height: 1.05;
+    /* STICKY TABS */
+    .tabs-bar {
+      position: sticky; top: 0; z-index: 50;
+      background: var(--bg); border-bottom: 2px solid var(--ink);
+      padding: 0 6vw; display: flex; gap: 0;
+      opacity: 0; animation: rise 0.8s cubic-bezier(0.16,1,0.3,1) 0.55s forwards;
     }
-
-    header h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    header p.tagline {
-      margin-top: 1.4rem;
-      color: var(--muted);
-      font-size: 0.74rem;
-      font-family: var(--mono);
-      font-weight: 300;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-    }
-
-    .bio-block {
-      margin-top: 2.4rem;
-      padding-top: 2.4rem;
-      border-top: 1px solid var(--line);
-      max-width: 620px;
-    }
-
-    .bio-block p {
-      font-size: 1.2rem;
-      line-height: 1.75;
-      color: #3d3a37;
-    }
-
-    header nav {
-      margin-top: 3rem;
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    header nav a {
-      font-family: var(--mono);
-      font-size: 0.72rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--muted);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-
-    header nav a:hover { color: var(--ink); }
-
-    /* ── SECTIONS ── */
-    main { padding: 0 6vw 10rem; }
-
-    section {
-      padding-top: 8rem;
-      margin-top: 0;
-      opacity: 0;
-      transform: translateY(28px);
-      transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    section.visible { opacity: 1; transform: translateY(0); }
-
-    .section-header {
-      display: flex;
-      align-items: baseline;
-      gap: 1.5rem;
-      margin-bottom: 4rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--line);
-    }
-
-    section h2 {
-      font-size: 0.7rem;
-      font-family: var(--mono);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 0;
-    }
-
-    .section-rule {
-      flex: 1;
-      height: 1px;
-      background: var(--line);
-    }
-
-    /* ── WORK CARD ── */
-    .work {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 4rem;
-    }
-
-    @media (min-width: 860px) {
-      .work { grid-template-columns: 1fr 1fr; }
-    }
-
-    .card {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .card.visible { opacity: 1; transform: translateY(0); }
-
-    .card-thumb {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16/9;
-      overflow: hidden;
-      background: var(--line);
-      margin-bottom: 1.4rem;
-    }
-
-    .card-thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      transition: transform 0.6s cubic-bezier(0.16,1,0.3,1), filter 0.4s;
-      filter: grayscale(15%);
-    }
-
-    .card:hover .card-thumb img { transform: scale(1.035); filter: grayscale(0%); }
-
-    .card-thumb::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(26,24,21,0.18) 0%, transparent 60%);
+    .tabs-bar::after {
+      content: ''; position: absolute; bottom: -14px; left: 0; right: 0;
+      height: 14px; background: linear-gradient(to bottom, rgba(245,243,239,0.95), transparent);
       pointer-events: none;
     }
-
-    .thumb-placeholder {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: var(--line);
-      color: var(--muted);
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+    .tab-btn {
+      font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--muted); background: none; border: none;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+      padding: 1.2rem 1.8rem 1.1rem; cursor: pointer;
+      transition: color 0.2s, border-color 0.2s, background 0.2s; white-space: nowrap;
     }
+    .tab-btn:first-child { padding-left: 0; }
+    .tab-btn:hover { color: var(--ink); background: rgba(26,24,21,0.03); }
+    .tab-btn.active { color: var(--ink); border-bottom-color: var(--ink); }
 
-    .card-type {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.6rem;
+    /* PANELS */
+    main { padding: 0 6vw 10rem; }
+    .panel { display: none; padding-top: 5rem; }
+    .panel.active { display: block; animation: panelIn 0.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+    @keyframes panelIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* PANEL TITLE */
+    .panel-title { display: flex; align-items: baseline; gap: 1.4rem; margin-bottom: 4rem; padding-bottom: 1.8rem; border-bottom: 1px solid var(--line); }
+    .panel-title h2 { font-size: clamp(1.9rem, 3vw, 2.8rem); font-weight: 300; letter-spacing: -0.01em; white-space: nowrap; }
+    .panel-title h2 em { font-style: italic; color: var(--accent); }
+    .title-rule { flex: 1; height: 1px; background: var(--line); margin-bottom: 0.3em; }
+    .panel-count { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); white-space: nowrap; }
+
+    /* FILM GRID */
+    .film-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+    @media (min-width: 900px) { .film-grid { grid-template-columns: 1fr 1fr; } }
+    .card { padding: 3.5rem 0; border-bottom: 1px solid var(--line); }
+    @media (min-width: 900px) {
+      .film-grid .card:nth-child(odd) { border-right: 1px solid var(--line); padding-right: 4vw; }
+      .film-grid .card:nth-child(even) { padding-left: 4vw; }
+      .film-grid .card:nth-last-child(-n+2) { border-bottom: none; }
     }
+    @media (max-width: 899px) { .film-grid .card:last-child { border-bottom: none; } }
 
-    .card h3 {
-      font-size: 1.75rem;
-      font-weight: 400;
-      line-height: 1.2;
-      margin-bottom: 0.9rem;
-    }
+    .card-thumb { position: relative; width: 100%; aspect-ratio: 16/9; overflow: hidden; background: var(--line); margin-bottom: 1.6rem; }
+    .card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.65s cubic-bezier(0.16,1,0.3,1), filter 0.4s; filter: grayscale(20%); }
+    .card:hover .card-thumb img { transform: scale(1.04); filter: grayscale(0%); }
+    .card-thumb::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(26,24,21,0.2) 0%, transparent 55%); pointer-events: none; }
+    .thumb-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
 
+    .card-type { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+    .card h3 { font-size: 1.75rem; font-weight: 400; line-height: 1.2; margin-bottom: 0.8rem; }
     .card h3 em { font-style: italic; }
+    .card p { font-size: 1.05rem; color: #4a4744; line-height: 1.7; margin-bottom: 1.2rem; max-width: 520px; }
 
-    .card p {
-      font-size: 1.05rem;
-      color: #4a4744;
-      line-height: 1.7;
-      margin-bottom: 1rem;
-    }
-
-    .awards {
-      margin-top: 0.8rem;
-    }
-
-    .award-item {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.05em;
-      padding: 0.35rem 0;
-      border-top: 1px solid var(--line);
-      line-height: 1.5;
-    }
-
+    /* AWARDS */
+    .awards { margin-top: 1rem; margin-bottom: 1.2rem; }
+    .award-item { font-family: var(--mono); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.04em; padding: 0.45rem 0; border-top: 1px solid var(--line); line-height: 1.6; }
     .award-item:last-child { border-bottom: 1px solid var(--line); }
+    .award-item strong { color: var(--ink); font-weight: 400; display: block; }
 
-    .award-item strong {
-      color: var(--ink);
-      font-weight: 400;
-      display: block;
+    /* LINKS */
+    .links { display: flex; gap: 0.8rem; flex-wrap: wrap; margin-top: 1rem; }
+    .link-btn { font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; color: var(--ink); border: 1px solid var(--line); padding: 0.5rem 1rem; transition: background 0.2s, color 0.2s, border-color 0.2s; }
+    .link-btn:hover { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+    /* ITEM LIST (photo, writing) */
+    .item-list { display: flex; flex-direction: column; gap: 0; }
+    .item { padding: 3.5rem 0; border-bottom: 1px solid var(--line); max-width: 760px; }
+    .item:first-child { padding-top: 0; }
+    .item:last-child { border-bottom: none; }
+    .item-type { font-family: var(--mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6rem; }
+    .item h3 { font-size: 1.6rem; font-weight: 400; line-height: 1.25; margin-bottom: 0.9rem; }
+    .item h3 em { font-style: italic; }
+    .item p { font-size: 1.05rem; color: #4a4744; line-height: 1.75; }
+
+    /* WRITING two-col */
+    .writing-grid { display: grid; grid-template-columns: 1fr; gap: 0; }
+    @media (min-width: 760px) {
+      .writing-grid { grid-template-columns: 1fr 1fr; }
+      .writing-grid .item:nth-child(odd) { border-right: 1px solid var(--line); padding-right: 4vw; }
+      .writing-grid .item:nth-child(even) { padding-left: 4vw; }
+      .writing-grid .item:nth-last-child(-n+2) { border-bottom: none; }
     }
 
-    /* ── LINKS ── */
-    .links {
-      display: flex;
-      gap: 1.2rem;
-      flex-wrap: wrap;
-      margin-top: 1.2rem;
-    }
-
-    .link-btn {
-      font-family: var(--mono);
-      font-size: 0.62rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      text-decoration: none;
-      color: var(--ink);
-      border: 1px solid var(--line);
-      padding: 0.45rem 0.9rem;
-      transition: background 0.2s, color 0.2s, border-color 0.2s;
-    }
-
-    .link-btn:hover {
-      background: var(--ink);
-      color: var(--bg);
-      border-color: var(--ink);
-    }
-
-    /* ── SINGLE COLUMN ITEMS (photo, writing) ── */
-    .item-list {
-      display: flex;
-      flex-direction: column;
-      gap: 3rem;
-    }
-
-    .item {
-      max-width: 680px;
-      opacity: 0;
-      transform: translateY(18px);
-      transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1);
-    }
-
-    .item.visible { opacity: 1; transform: translateY(0); }
-
-    .item-type {
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 0.5rem;
-    }
-
-    .item h3 { font-size: 1.55rem; font-weight: 400; margin-bottom: 0.8rem; }
-    .item p { font-size: 1.05rem; color: #4a4744; line-height: 1.7; }
-
-    /* ── FOOTER ── */
-    footer {
-      border-top: 1px solid var(--line);
-      padding: 3rem 6vw;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      font-family: var(--mono);
-      font-size: 0.65rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-    }
-
-    footer a { color: var(--muted); text-decoration: none; }
+    /* FOOTER */
+    footer { border-top: 1px solid var(--line); padding: 2.5rem 6vw; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; font-family: var(--mono); font-size: 0.62rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
+    footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
     footer a:hover { color: var(--ink); }
 
-    /* ── FADE IN ── */
-    @keyframes rise {
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* YouTube thumbnail helper */
-    .yt-thumb { object-fit: cover; }
+    @keyframes rise { to { opacity: 1; transform: translateY(0); } }
+    .stagger { opacity: 0; transform: translateY(16px); transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .stagger.entered { opacity: 1; transform: translateY(0); }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Yadykar<br><em>Ibraimov</em></h1>
-  <p class="tagline">Documentary filmmaker · Photographer · Writer · Almaty</p>
-  <div class="bio-block">
-    <p> Kazakhstani born Uyghur artist working at the intersection of documentary film, photography, and literature. His work traces survivors, borderlands, vast lanscapes and silences across Central Asia and beyond. Recognized by Magnum Photos, screened at international festivals from Cottbus to Angkor, and published in the first Uyghur literary anthology in English.</p>
+  <div class="header-top">
+    <h1>Yadykar<br><em>Ibraimov</em></h1>
+    <div class="header-contact">
+      Almaty, Kazakhstan<br>
+      <a href="https://www.instagram.com/yangisar/" target="_blank" rel="noopener">@yangisar &#8599;</a>
+    </div>
   </div>
-  <nav>
-    <a href="#film">Film</a>
-    <a href="#photo">Photography</a>
-    <a href="#writing">Writing</a>
-    <a href="https://www.instagram.com/yangisar/" target="_blank" rel="noopener">Instagram ↗</a>
-  </nav>
+  <div class="bio-block">
+    <p>Uyghur&#8211;Kazakh artist working at the intersection of documentary film, photography, and literature. His work traces the human cost of the Uyghur genocide &#8212; following survivors, borderlands, and silences across Central Asia and beyond. Recognized by Magnum Photos, screened at international festivals from Cottbus to Angkor, and published in the first Uyghur literary anthology in English.</p>
+  </div>
 </header>
+
+<nav class="tabs-bar" role="tablist">
+  <button class="tab-btn active" data-tab="film" role="tab" aria-selected="true">Film</button>
+  <button class="tab-btn" data-tab="photo" role="tab" aria-selected="false">Photography</button>
+  <button class="tab-btn" data-tab="writing" role="tab" aria-selected="false">Writing</button>
+  <button class="tab-btn" data-tab="interactive" role="tab" aria-selected="false">Interactive</button>
+</nav>
 
 <main>
 
   <!-- FILM -->
-  <section id="film">
-    <div class="section-header"><h2>Film Works</h2><div class="section-rule"></div></div>
-    <div class="work">
+  <div class="panel active" id="panel-film" role="tabpanel">
+    <div class="panel-title">
+      <h2><em>Film</em> Works</h2>
+      <div class="title-rule"></div>
+      <span class="panel-count">4 works</span>
+    </div>
+    <div class="film-grid">
 
-      <!-- Voice of the Glacier -->
-      <div class="card">
+      <div class="card stagger">
         <div class="card-thumb">
-          <img
-            src="https://img.youtube.com/vi/JNP8gI2tbQE/maxresdefault.jpg"
-            alt="Voice of the Glacier"
-            loading="lazy"
-            onerror="this.src='https://img.youtube.com/vi/JNP8gI2tbQE/hqdefault.jpg'"
-          />
+          <img src="https://img.youtube.com/vi/JNP8gI2tbQE/maxresdefault.jpg" alt="Voice of the Glacier" loading="lazy" onerror="this.src='https://img.youtube.com/vi/JNP8gI2tbQE/hqdefault.jpg'" />
         </div>
-        <div class="card-type">Feature Documentary</div>
-        <h3><em>"Voice of the Glacier"</em></h3>
-        <p>In a remote mountainous area at an altitude of 3,400 meters, in absolute isolation, two researchers study an ancient dying glacier.</p>
+        <div class="card-type">Feature Documentary &middot; 2023</div>
+        <h3><em>&#8220;Voice of the Glacier&#8221;</em></h3>
+        <p>In a remote mountainous area at 3,400 meters, two researchers study an ancient dying glacier in absolute isolation.</p>
         <div class="awards">
-          <div class="award-item"><strong>Nov 2023 — Cottbus IFF, Germany</strong>World Premiere</div>
-          <div class="award-item"><strong>Dec 2023 — Bastau IFF, Almaty</strong>Artistic Value &amp; Creative Endeavor Award</div>
-          <div class="award-item"><strong>Dec 2023 — Cinema Verite, Iran</strong>Best Documentary Nominee</div>
-          <div class="award-item"><strong>May 2024 — UAFF Ankara, Turkey</strong>Best Cinematography Award</div>
-          <div class="award-item"><strong>Oct 2024 — Touchstone IFF</strong>Best Cinematography Award</div>
-          <div class="award-item"><strong>Sep 2024 — Wildlife Vaasa, Finland</strong>Official Selection</div>
-          <div class="award-item"><strong>Jun 2025 — Golden FEMI</strong>Best Documentary Nominee</div>
+          <div class="award-item"><strong>Nov 2023 &mdash; Cottbus IFF, Germany</strong>World Premiere</div>
+          <div class="award-item"><strong>Dec 2023 &mdash; Bastau IFF, Almaty</strong>Artistic Value &amp; Creative Endeavor Award</div>
+          <div class="award-item"><strong>Dec 2023 &mdash; Cinema Verite, Iran</strong>Best Documentary Nominee</div>
+          <div class="award-item"><strong>May 2024 &mdash; UAFF Ankara, Turkey</strong>Best Cinematography Award</div>
+          <div class="award-item"><strong>Oct 2024 &mdash; Touchstone IFF</strong>Best Cinematography Award</div>
+          <div class="award-item"><strong>Sep 2024 &mdash; Wildlife Vaasa, Finland</strong>Official Selection</div>
+          <div class="award-item"><strong>Jun 2025 &mdash; Golden FEMI</strong>Best Documentary Nominee</div>
         </div>
         <div class="links">
           <a class="link-btn" href="https://www.youtube.com/watch?v=JNP8gI2tbQE" target="_blank" rel="noopener">Watch screener</a>
@@ -384,41 +195,34 @@
         </div>
       </div>
 
-      <!-- Let Her Dance -->
-      <div class="card">
+      <div class="card stagger">
         <div class="card-thumb">
-          <img
-            src="https://img.youtube.com/vi/rZ2Rx3kF1BU/maxresdefault.jpg"
-            alt="Let Her Dance"
-            loading="lazy"
-            onerror="this.src='https://img.youtube.com/vi/rZ2Rx3kF1BU/hqdefault.jpg'"
-          />
+          <img src="https://img.youtube.com/vi/rZ2Rx3kF1BU/maxresdefault.jpg" alt="Let Her Dance" loading="lazy" onerror="this.src='https://img.youtube.com/vi/rZ2Rx3kF1BU/hqdefault.jpg'" />
         </div>
-        <div class="card-type">Short Video Art Film</div>
-        <h3><em>"Let Her Dance"</em></h3>
-        <p>Dance as allegory to Uyghur plight — a poetic short exploring body, freedom, and resistance.</p>
+        <div class="card-type">Short Video Art Film &middot; 2022</div>
+        <h3><em>&#8220;Let Her Dance&#8221;</em></h3>
+        <p>Dance as allegory to Uyghur plight &#8212; a poetic short exploring body, freedom, and resistance.</p>
         <div class="awards">
-          <div class="award-item"><strong>Nov 2022 — Balkan Can Kino, Athens</strong>Official Selection — Decolonise category</div>
-          <div class="award-item"><strong>Jun 2024 — Diaspora Film Festival, New York</strong>Best Short Film Nominee</div>
-          <div class="award-item"><strong>Aug 2023 — ONED Festival, Toulouse</strong>Official Selection</div>
-          <div class="award-item"><strong>Nov 2024 — WideScreen Film &amp; Music Video Festival</strong>Official Selection</div>
+          <div class="award-item"><strong>Nov 2022 &mdash; Balkan Can Kino, Athens</strong>Official Selection &#8212; Decolonise category</div>
+          <div class="award-item"><strong>Jun 2024 &mdash; Diaspora Film Festival, New York</strong>Best Short Film Nominee</div>
+          <div class="award-item"><strong>Aug 2023 &mdash; ONED Festival, Toulouse</strong>Official Selection</div>
+          <div class="award-item"><strong>Nov 2024 &mdash; WideScreen Film &amp; Music Video Festival</strong>Official Selection</div>
         </div>
         <div class="links">
           <a class="link-btn" href="https://www.youtube.com/watch?v=rZ2Rx3kF1BU" target="_blank" rel="noopener">Watch film</a>
         </div>
       </div>
 
-      <!-- Letter Home -->
-      <div class="card">
+      <div class="card stagger">
         <div class="card-thumb">
           <div class="thumb-placeholder">Short Documentary</div>
         </div>
-        <div class="card-type">Short Documentary</div>
-        <h3><em>"Letter Home"</em></h3>
-        <p>Audio messages from Uyghur people around the world who lost touch with loved ones — played as a performative gesture at the Chinese border.</p>
+        <div class="card-type">Short Documentary &middot; 2024</div>
+        <h3><em>&#8220;Letter Home&#8221;</em></h3>
+        <p>Audio messages from Uyghur people around the world who lost touch with loved ones &#8212; played as a performative gesture at the Chinese border.</p>
         <div class="awards">
-          <div class="award-item"><strong>Feb 2024 — 2.Dh5 Festival, Amsterdam</strong>Screening</div>
-          <div class="award-item"><strong>Feb 2025 — Decolonial Documentation, Toronto</strong>Symposium &amp; Screening</div>
+          <div class="award-item"><strong>Feb 2024 &mdash; 2.Dh5 Festival, Amsterdam</strong>Screening</div>
+          <div class="award-item"><strong>Feb 2025 &mdash; Decolonial Documentation, Toronto</strong>Symposium &amp; Screening</div>
         </div>
         <div class="links">
           <a class="link-btn" href="https://www.instagram.com/reel/C28BoFAiI0L/" target="_blank" rel="noopener">Watch short</a>
@@ -426,18 +230,12 @@
         </div>
       </div>
 
-      <!-- Tracks East ARTE -->
-      <div class="card">
+      <div class="card stagger">
         <div class="card-thumb">
-          <img
-            src="https://img.youtube.com/vi/fJ6DVOYjOG0/maxresdefault.jpg"
-            alt="Tracks East ARTE"
-            loading="lazy"
-            onerror="this.src='https://img.youtube.com/vi/fJ6DVOYjOG0/hqdefault.jpg'"
-          />
+          <img src="https://img.youtube.com/vi/fJ6DVOYjOG0/maxresdefault.jpg" alt="Tracks East ARTE" loading="lazy" onerror="this.src='https://img.youtube.com/vi/fJ6DVOYjOG0/hqdefault.jpg'" />
         </div>
-        <div class="card-type">TV Documentary Segment</div>
-        <h3><em>Tracks East</em> — ARTE.TV</h3>
+        <div class="card-type">TV Documentary Segment &middot; 2026</div>
+        <h3><em>Tracks East</em> &mdash; ARTE.TV</h3>
         <p>Documentary segment aired January 2026 on ARTE.TV, the Franco-German public broadcaster.</p>
         <div class="links">
           <a class="link-btn" href="https://www.youtube.com/watch?v=fJ6DVOYjOG0" target="_blank" rel="noopener">Watch on YouTube</a>
@@ -445,107 +243,132 @@
       </div>
 
     </div>
-  </section>
+  </div>
 
-  <!-- PHOTO -->
-  <section id="photo">
-    <div class="section-header"><h2>Photography</h2><div class="section-rule"></div></div>
+  <!-- PHOTOGRAPHY -->
+  <div class="panel" id="panel-photo" role="tabpanel">
+    <div class="panel-title">
+      <h2><em>Photography</em></h2>
+      <div class="title-rule"></div>
+      <span class="panel-count">2 projects</span>
+    </div>
     <div class="item-list">
 
-      <div class="item">
-        <div class="item-type">Photo Project · Magnum Photos Collaboration</div>
-        <h3><em>"Tono-naan is at home, but where is home?"</em></h3>
-        <p>Part of Magnum Photos Agency's <em>Beyond the Silence</em> collaboration. The project documents experiences of Uyghur survivors of Chinese concentration camps along Kazakhstan's eastern border — a borderland that has become both a place of torture and a sought-after refuge.</p>
-        <div class="awards" style="margin-top:1rem">
-          <div class="award-item"><strong>Nov 2024 — Egin Art Space, Almaty</strong>Beyond the Silence — Territory</div>
-          <div class="award-item"><strong>Dec 2024 — Centro Fotográfico Manuel Álvarez Bravo, Oaxaca</strong>Beyond the Silence — Censorship &amp; Propaganda</div>
-          <div class="award-item"><strong>Feb 2025 — Angkor Photo Festival, Cambodia</strong>Group Exhibition</div>
-          <div class="award-item"><strong>Mar 2025 — Jam Factory Art Center, Lviv, Ukraine</strong>Beyond the Silence · Odesa Photo Days × Magnum</div>
+      <div class="item stagger">
+        <div class="item-type">Photo Project &middot; Magnum Photos Collaboration</div>
+        <h3><em>&#8220;Tono-naan is at home, but where is home?&#8221;</em></h3>
+        <p>Part of Magnum Photos Agency&#8217;s <em>Beyond the Silence</em> collaboration. Documents experiences of Uyghur survivors of Chinese concentration camps along Kazakhstan&#8217;s eastern border &#8212; a borderland that has become both a place of torture and a sought-after refuge.</p>
+        <div class="awards" style="margin-top:1.2rem">
+          <div class="award-item"><strong>Nov 2024 &mdash; Egin Art Space, Almaty</strong>Beyond the Silence &#8212; Territory</div>
+          <div class="award-item"><strong>Dec 2024 &mdash; Centro Fotogr&aacute;fico Manuel &Aacute;lvarez Bravo, Oaxaca</strong>Censorship &amp; Propaganda</div>
+          <div class="award-item"><strong>Feb 2025 &mdash; Angkor Photo Festival, Cambodia</strong>Group Exhibition</div>
+          <div class="award-item"><strong>Mar 2025 &mdash; Jam Factory Art Center, Lviv, Ukraine</strong>Beyond the Silence &middot; Odesa Photo Days &times; Magnum</div>
         </div>
-        <div class="links" style="margin-top:1rem">
-          <a class="link-btn" href="https://www.magnumphotos.com/newsroom/beyond-the-silence-an-exhibition-in-kazakhstan/" target="_blank" rel="noopener">Magnum Photos ↗</a>
+        <div class="links" style="margin-top:1.2rem">
+          <a class="link-btn" href="https://www.magnumphotos.com/newsroom/beyond-the-silence-an-exhibition-in-kazakhstan/" target="_blank" rel="noopener">Magnum Photos &#8599;</a>
           <a class="link-btn" href="https://angkor-photo.com/apf-programme/beyond-the-silence/" target="_blank" rel="noopener">Angkor Photo Festival</a>
         </div>
       </div>
 
-      <div class="item">
-        <div class="item-type">Solo Exhibition</div>
-        <h3>Salon der Photographie — Paderborn, Germany</h3>
+      <div class="item stagger">
+        <div class="item-type">Group Exhibition &middot; 2023</div>
+        <h3>Salon der Photographie &mdash; Paderborn, Germany</h3>
         <p>Portraits of Uyghurs who were imprisoned in Chinese concentration camps, exhibited at the Paderborn Kunstverein. August 2023.</p>
-        <div class="links" style="margin-top:1rem">
-          <a class="link-btn" href="https://www.nw.de/lokal/kreis_paderborn/paderborn/23629130_Neue-Ausstellung-im-Paderborner-Kunstverein-zeigt-fotografische-Erzaehlungen.html" target="_blank" rel="noopener">Press coverage ↗</a>
+        <div class="links" style="margin-top:1.2rem">
+          <a class="link-btn" href="https://www.nw.de/lokal/kreis_paderborn/paderborn/23629130_Neue-Ausstellung-im-Paderborner-Kunstverein-zeigt-fotografische-Erzaehlungen.html" target="_blank" rel="noopener">Press coverage &#8599;</a>
         </div>
       </div>
 
     </div>
-  </section>
+  </div>
 
   <!-- WRITING -->
-  <section id="writing">
-    <div class="section-header"><h2>Published Writing</h2><div class="section-rule"></div></div>
-    <div class="item-list">
+  <div class="panel" id="panel-writing" role="tabpanel">
+    <div class="panel-title">
+      <h2><em>Published</em> Writing</h2>
+      <div class="title-rule"></div>
+      <span class="panel-count">2 works</span>
+    </div>
+    <div class="writing-grid">
 
-      <div class="item">
-        <div class="item-type">Short Story</div>
-        <h3><em>"Aziz's Name"</em></h3>
-        <p>Published in <em>Under the Mulberry Tree: A Contemporary Uyghur Anthology, Vol. I</em> (February 2023). The story can be read in full via the Uyghur Collective.</p>
-        <div class="links" style="margin-top:1rem">
-          <a class="link-btn" href="https://uyghurcollective.com/community/f/azizs-name" target="_blank" rel="noopener">Read story ↗</a>
-          <a class="link-btn" href="https://www.amazon.com/Under-Mulberry-Tree-Contemporary-Anthology/dp/B0C3FTRMMD" target="_blank" rel="noopener">Anthology on Amazon</a>
+      <div class="item stagger">
+        <div class="item-type">Short Story &middot; 2023</div>
+        <h3><em>&#8220;Aziz&#8217;s Name&#8221;</em></h3>
+        <p>Published in <em>Under the Mulberry Tree: A Contemporary Uyghur Anthology, Vol. I</em> (February 2023) &#8212; the first anthology of Uyghur literature in English.</p>
+        <div class="links" style="margin-top:1.2rem">
+          <a class="link-btn" href="https://uyghurcollective.com/community/f/azizs-name" target="_blank" rel="noopener">Read story &#8599;</a>
+          <a class="link-btn" href="https://www.amazon.com/Under-Mulberry-Tree-Contemporary-Anthology/dp/B0C3FTRMMD" target="_blank" rel="noopener">Anthology</a>
         </div>
       </div>
 
-      <div class="item">
-        <div class="item-type">Poem</div>
-        <h3><em>"Lines from a Correspondence with the Leader of the Party"</em></h3>
+      <div class="item stagger">
+        <div class="item-type">Poem &middot; forthcoming Vol. II</div>
+        <h3><em>&#8220;Lines from a Correspondence with the Leader of the Party&#8221;</em></h3>
         <p>Forthcoming in the Second Edition of the Uyghur Anthology. Published online at <em>I Am Not a Silent Poet</em>.</p>
-        <div class="links" style="margin-top:1rem">
-          <a class="link-btn" href="https://iamnotasilentpoet.wordpress.com/2019/05/27/lines-from-a-correspondence-with-the-leader-of-the-party-by-yadykar-ibraimov/" target="_blank" rel="noopener">Read poem ↗</a>
+        <div class="links" style="margin-top:1.2rem">
+          <a class="link-btn" href="https://iamnotasilentpoet.wordpress.com/2019/05/27/lines-from-a-correspondence-with-the-leader-of-the-party-by-yadykar-ibraimov/" target="_blank" rel="noopener">Read poem &#8599;</a>
         </div>
       </div>
 
     </div>
-  </section>
+  </div>
 
   <!-- INTERACTIVE -->
-  <section id="other">
-    <div class="section-header"><h2>Interactive</h2><div class="section-rule"></div></div>
+  <div class="panel" id="panel-interactive" role="tabpanel">
+    <div class="panel-title">
+      <h2><em>Interactive</em></h2>
+      <div class="title-rule"></div>
+      <span class="panel-count">1 work</span>
+    </div>
     <div class="item-list">
-      <div class="item">
-        <div class="item-type">Browser Game · February 2026</div>
-        <h3>Mobile Mini-Game — Kazakh Rap Collaboration</h3>
-        <p>A browser-based mobile game created in collaboration with a Kazakh rap band.</p>
-        <div class="links" style="margin-top:1rem">
-          <a class="link-btn" href="https://yangisar.github.io/daiynball.race/" target="_blank" rel="noopener">Play game ↗</a>
+      <div class="item stagger">
+        <div class="item-type">Browser Game &middot; February 2026</div>
+        <h3>Daiynball Race</h3>
+        <p>A browser-based mobile game created in collaboration with a Kazakh rap band. Playable on desktop and mobile.</p>
+        <div class="links" style="margin-top:1.2rem">
+          <a class="link-btn" href="https://yangisar.github.io/daiynball.race/" target="_blank" rel="noopener">Play game &#8599;</a>
         </div>
       </div>
     </div>
-  </section>
+  </div>
 
 </main>
 
 <footer>
-  <span>Yadykar Ibraimov — Almaty, Kazakhstan</span>
-  <a href="https://www.instagram.com/yangisar/" target="_blank" rel="noopener">@yangisar</a>
+  <span>Yadykar Ibraimov</span>
+  <a href="https://www.instagram.com/yangisar/" target="_blank" rel="noopener">Instagram @yangisar &#8599;</a>
 </footer>
 
 <script>
-  // Intersection Observer for scroll-based fade-in
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        // Stagger children cards/items
-        const children = entry.target.querySelectorAll('.card, .item');
-        children.forEach((child, i) => {
-          setTimeout(() => child.classList.add('visible'), i * 120);
-        });
-      }
+  const tabs = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.panel');
+
+  function activate(tab) {
+    const target = tab.dataset.tab;
+    tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+    panels.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected','true');
+    const panel = document.getElementById('panel-' + target);
+    panel.classList.add('active');
+    // stagger items
+    panel.querySelectorAll('.stagger').forEach((el, i) => {
+      el.classList.remove('entered');
+      void el.offsetWidth;
+      setTimeout(() => el.classList.add('entered'), i * 110);
     });
-  }, { threshold: 0.08 });
+    // scroll to just below nav
+    const bar = document.querySelector('.tabs-bar');
+    const y = bar.getBoundingClientRect().bottom + window.scrollY;
+    window.scrollTo({ top: y, behavior: 'smooth' });
+  }
 
-  document.querySelectorAll('section').forEach(s => observer.observe(s));
+  tabs.forEach(tab => tab.addEventListener('click', () => activate(tab)));
+
+  // initial stagger
+  document.querySelectorAll('#panel-film .stagger').forEach((el, i) => {
+    setTimeout(() => el.classList.add('entered'), 350 + i * 110);
+  });
 </script>
-
 </body>
 </html>
